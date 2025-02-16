@@ -17,7 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from books.views import books, book_detail
 from viewer.views import hello, home, param_reg, param_url, movies, movie_detail
+
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,5 +36,9 @@ urlpatterns = [
     path('param-url/', param_url),
 
     path('movies/', movies, name='movies'),
-    path('movies/<id>', movie_detail, name='movie_detail')
-]
+    path('movies/<id>', movie_detail, name='movie_detail'),
+
+    path('books/', books, name='books'),
+    path('books/<id>', book_detail, name='book_detail')
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# ^ adaugam link-uri la fisierele statice

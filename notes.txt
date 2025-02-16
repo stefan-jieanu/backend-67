@@ -1,0 +1,10 @@
+Django este un framework de Python pentru backend.
+Django foloseste design pattern-ul MTV (sau MVC):
+- Model - datele din baza de date
+- Template (View) - prezentare datelor
+- View (Controller) - business logic
+
+Cateva functionalitati incluse in Django:
+- ORM (Object Relational Mapping)
+- Template language
+- Autentificare si Autorizare

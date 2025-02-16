@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% comment %}
+<!-- Sintaxa {{  }} se foloseste pentru a afisa -->
+<!-- continutul unei variabile -->
+{% endcomment %}
+<h1>Welcome to {{ title }}</h1>
+<p>A site about movies</p>
+
+<!--  Exemplu tag if  -->
+{% if user %}
+<p>Hello, {{ user }}</p>
+{% else %}
+<p>No user!</p>
+{% endif %}
+
+<!--  Exemplu tag for  -->
+<ul>
+    {% for movie in movies %}
+        <li>{{ movie }}</li>
+    {% endfor %}
+</ul>
+
+<!-- Exemplu tag url 'nume path' -->
+<!-- Numele path-ului trebuie sa coincida cu un name -->
+<!-- dintr-un path declarat in urls.py -->
+<a href="{% url 'home' %}">Home Page</a>
+
+{% endblock %}

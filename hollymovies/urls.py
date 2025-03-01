@@ -15,13 +15,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from books.views import books, book_detail
-from viewer.views import hello, home, param_reg, param_url, movies, movie_detail
+from viewer.views import hello, home, param_reg, param_url, movies, movie_detail, movies_by_genre, genres
 
 from django.conf import settings
 from django.conf.urls.static import static
+
+from viewer import urls as viewer_urls
+from books import urls as books_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,10 +38,9 @@ urlpatterns = [
     # Exemplu cu parametru url encoded
     path('param-url/', param_url),
 
-    path('movies/', movies, name='movies'),
-    path('movies/<id>', movie_detail, name='movie_detail'),
+    path('movies/', include(viewer_urls)),
 
-    path('books/', books, name='books'),
-    path('books/<id>', book_detail, name='book_detail')
+    path('books/', include(books_urls))
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # ^ adaugam link-uri la fisierele statice

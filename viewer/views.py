@@ -76,3 +76,27 @@ def movie_detail(request, id):
             'movie': movie
         }
     )
+
+def movies_by_genre(request, genre_id):
+    genre = Genre.objects.get(id=genre_id)
+    movies = Movie.objects.filter(genre=genre)
+
+    return render(
+        request,
+        'movies_by_genre.html',
+        context={
+            'genre': genre,
+            'movies': movies
+        }
+    )
+
+def genres(request):
+    g = Genre.objects.all()
+
+    return render(
+        request,
+        'genres.html',
+        context={
+            'genres': g
+        }
+    )

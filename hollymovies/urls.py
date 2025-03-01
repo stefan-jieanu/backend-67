@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from books.views import books, book_detail
-from viewer.views import hello, home, param_reg, param_url, movies, movie_detail, movies_by_genre, genres
+from viewer.views import *
 
 from django.conf import settings
 from django.conf.urls.static import static

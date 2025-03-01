@@ -4,7 +4,9 @@
 
 <h1>All movies</h1>
 <ul>
-{% for movie in movies %}
+<!-- Daca folosim un ListView variabila care contine lista de filme -->
+<!-- Sa va numi object_list -->
+{% for movie in object_list %}
   <li>
       <a href="{% url 'movie_detail' movie.id %}">{{ movie.title }}</a>
   </li>

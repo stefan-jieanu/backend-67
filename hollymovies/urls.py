@@ -15,6 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path, include
 
 from books.views import books, book_detail
@@ -25,6 +26,7 @@ from django.conf.urls.static import static
 
 from viewer import urls as viewer_urls
 from books import urls as books_urls
+from accounts import urls as accounts_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -40,7 +42,9 @@ urlpatterns = [
 
     path('movies/', include(viewer_urls)),
 
-    path('books/', include(books_urls))
+    path('books/', include(books_urls)),
+
+    path('accounts/', include(accounts_urls))
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # ^ adaugam link-uri la fisierele statice

@@ -11,4 +11,24 @@
 <p>Description: {{ object.description }}</p>
 <p>Added to site at {{ object.created }}</p>
 
+{% if perms.viewer.change_movie %}
+<a href="{% url 'movie_update' object.pk %}" class="btn btn-warning">
+    Edit
+</a>
+{% else %}
+<a href="#" class="btn btn-warning disabled">
+    Edit
+</a>
+{% endif %}
+
+{% if perms.viewer.delete_movie %}
+<a href="{% url 'movie_delete' object.pk %}" class="btn btn-danger">
+    Delete
+</a>
+{% else %}
+<a href="#" class="btn btn-danger disabled">
+    Delete
+</a>
+{% endif %}
+
 {% endblock %}

@@ -1,9 +1,10 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 
 from django.views import View
-from django.views.generic import TemplateView, ListView, DetailView, FormView
+from django.views.generic import TemplateView, ListView, DetailView, FormView, CreateView, UpdateView, DeleteView
 
 from viewer.forms import MovieForm
 from viewer.models import Movie, Genre
@@ -109,11 +110,18 @@ class MoviesView(ListView):
 #     )
 
 # Un detail view este folosit pentru a afisa un singur obiect
-class MoviesDetailView(DetailView):
+# LoginRequiredMixin obliga utilizatorul sa fie autentificat
+# PermissionRequiredMixin verifica permisiunea specificata in view
+class MoviesDetailView(PermissionRequiredMixin, DetailView):
     template_name = 'movie_detail.html'
 
     # Modelul afisat in pagina
     model = Movie
+
+    # Permisiunile se scriu sub forma
+    # numeaplicatie.numeactiune_numemodel
+    # actiunile pot fi: view, add, change, delete
+    permission_required = 'viewer.view_movie'
 
 def movies_by_genre(request, genre_id):
     genre = Genre.objects.get(id=genre_id)
@@ -142,31 +150,56 @@ class GenresView(ListView):
     template_name = 'genres.html'
     model = Genre
 
+# View pentru un form generic
+# Putem face orice cu datele din acest view
+# (sa le salvam in DB, sa trimitem un mail cu ele, etc)
+# class MovieCreateView(FormView):
+#     template_name = 'movie_form.html'
+#     form_class = MovieForm
+#
+#     # Pagina pe care suntem trimisi dupa ce completam formularul
+#     success_url = reverse_lazy('movies')
+#
+#     # Functia se va apela automat in cazul in care formularul primit
+#     # este valid
+#     def form_valid(self, form):
+#         result = super().form_valid(form)
+#
+#         # form.cleaned_data este un dictionar cu datele din formular
+#         cleaned_data = form.cleaned_data
+#
+#         Movie.objects.create(
+#             title=cleaned_data['title'],
+#             genre=cleaned_data['genre'],
+#             rating=cleaned_data['rating'],
+#             released=cleaned_data['released'],
+#             description=cleaned_data['description']
+#         )
+#
+#         return result
+#
+#     # Daca formularul nu este valid, se va apelac func:
+#     def form_invalid(self, form):
+#         print('Formularul nu este valid!')
+#         return super().form_invalid(form)
 
-class MovieCreateView(FormView):
+class MovieCreateView(PermissionRequiredMixin, CreateView):
     template_name = 'movie_form.html'
     form_class = MovieForm
     success_url = reverse_lazy('movies')
+    permission_required = 'viewer.add_movie'
 
-    # Functia se va apela automat in cazul in care formularul primit
-    # este valid
-    def form_valid(self, form):
-        result = super().form_valid(form)
 
-        # form.cleaned_data este un dictionar cu datele din formular
-        cleaned_data = form.cleaned_data
+class MovieUpdateView(PermissionRequiredMixin, UpdateView):
+    template_name = 'movie_form.html'
+    form_class = MovieForm
+    model = Movie
+    success_url = reverse_lazy('movies')
+    permission_required = 'viewer.change_movie'
 
-        Movie.objects.create(
-            title=cleaned_data['title'],
-            genre=cleaned_data['genre'],
-            rating=cleaned_data['rating'],
-            released=cleaned_data['released'],
-            description=cleaned_data['description']
-        )
 
-        return result
-
-    # Daca formularul nu este valid, se va apelac func:
-    def form_invalid(self, form):
-        print('Formularul nu este valid!')
-        return super().form_invalid(form)
+class MovieDeleteView(PermissionRequiredMixin, DeleteView):
+    template_name = 'movie_confirm_delete.html'
+    model = Movie
+    success_url = reverse_lazy('movies')
+    permission_required = 'viewer.delete_movie'

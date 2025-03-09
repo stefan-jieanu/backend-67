@@ -2,6 +2,18 @@
 
 {% block content %}
 
+<!-- Obiectul perms este pus automat in toate templateurile -->
+<!-- El contine permisiunile userului care acceseaza pagina -->
+<!-- Sintaxa pentru a ne folosi de el: -->
+<!-- perms.numeapp.actiune_numemodel -->
+<!-- unde actiune este: add, change, delete, view -->
+
+{% if perms.viewer.add_movie %}
+    <a href="{% url 'movie_create' %}" class="btn btn-primary">Add new</a>
+{% else %}
+    <p>Nu poti adauga un film nou.</p>
+{% endif %}
+
 <h1>All movies</h1>
 <ul>
 <!-- Daca folosim un ListView variabila care contine lista de filme -->

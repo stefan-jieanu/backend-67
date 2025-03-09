@@ -24,6 +24,8 @@ class Movie(Model):
 
     description = TextField()
 
+    # test = CharField(max_length=10, null=True)
+
     # auto_now_add inseamna ca acest field sa va completa automat
     # cand este adaugat un obiect
     created = DateTimeField(auto_now_add=True)

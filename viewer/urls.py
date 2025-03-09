@@ -12,5 +12,7 @@ urlpatterns = [
     path('<pk>', MoviesDetailView.as_view(), name='movie_detail'),
     path('genre/', GenresView.as_view(), name='genres'),
     path('genre/<genre_id>', movies_by_genre, name='movies_by_genre'),
-    path('create/', MovieCreateView.as_view(), name='movie_create')
+    path('create/', MovieCreateView.as_view(), name='movie_create'),
+    path('update/<pk>', MovieUpdateView.as_view(), name='movie_update'),
+    path('delete/<pk>', MovieDeleteView.as_view(), name='movie_delete')
 ]
